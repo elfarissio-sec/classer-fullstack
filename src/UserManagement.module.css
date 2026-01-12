@@ -1,0 +1,114 @@
+.userManagementContainer {
+  padding: 20px;
+}
+
+.light .userManagementContainer {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+.dark .userManagementContainer {
+  background-color: #343a40;
+  color: #f8f9fa;
+}
+
+.userTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.light .userTable {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.dark .userTable {
+  background-color: #495057;
+  color: #f8f9fa;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.userTable th,
+.userTable td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.dark .userTable th,
+.dark .userTable td {
+  border-bottom: 1px solid #6c757d;
+}
+
+.userTable th {
+  background-color: #e9ecef;
+  font-weight: bold;
+}
+
+.dark .userTable th {
+  background-color: #6c757d;
+}
+
+.statusIndicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.statusIndicator.active {
+  background-color: #28a745;
+}
+
+.statusIndicator.inactive {
+  background-color: #dc3545;
+}
+
+.userActions button {
+  padding: 6px 10px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: background-color 0.3s ease;
+}
+
+.userActions button:hover {
+  opacity: 0.8;
+}
+
+.actionButtonPrimary {
+  background-color: #007bff;
+  color: white;
+}
+
+.actionButtonDanger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.actionButtonSecondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.roleSelect {
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  background-color: #fff;
+}
+
+.dark .roleSelect {
+  background-color: #495057;
+  color: #f8f9fa;
+  border: 1px solid #6c757d;
+}
+
+.sectionTitle {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+}

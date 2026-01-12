@@ -1,0 +1,136 @@
+.calendarContainer {
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.calendarContainer.light {
+  background-color: #ffffff;
+  color: #333;
+  border: 1px solid #e0e0e0;
+}
+
+.calendarContainer.dark {
+  background-color: #3d485a;
+  color: #f0f0f0;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.header button {
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.light .header button {
+  color: #333;
+}
+
+.dark .header button {
+  color: #f0f0f0;
+}
+
+.daysOfWeek,
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.daysOfWeek div {
+  font-weight: bold;
+  text-align: center;
+  padding-bottom: 0.5rem;
+}
+
+.day {
+  min-height: 100px;
+  padding: 8px;
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: background-color ease 0.3s;
+}
+
+.light .day {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+}
+
+.dark .day {
+  background-color: #282f3a;
+  border: 1px solid #444;
+}
+
+.day:hover {
+  background-color: #30acff75;
+  transition: background-color ease 0.2s;
+}
+
+.dark .today {
+  box-shadow: 0 0 8px #30acff75;
+  border: 2px solid #30acff;
+  color: #30acff;
+}
+
+.light .today {
+  box-shadow: 0 0 8px #30acff75;
+  border: 2px solid #30acff;
+  color: #01385c;
+}
+
+.dayNumber {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.bookings {
+  margin-top: 2.5px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.bookingItem {
+  margin-bottom: 4px;
+}
+
+.booking {
+  color: white;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-bottom: 3px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.booking:nth-child(1) {
+  background-color: #007bff;
+}
+
+.booking:nth-child(2) {
+  background-color: #00c53b;
+}
+
+.booking:nth-child(3) {
+  background-color: #ff9800;
+}
+
+.booking:nth-child(4) {
+  background-color: #ff5722;
+}

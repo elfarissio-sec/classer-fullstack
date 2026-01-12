@@ -1,0 +1,102 @@
+.roomListContainer {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.roomListContainer h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.filters select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.roomGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.roomCard {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.roomCard h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.roomCard p {
+  margin: 0;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.equipment {
+  display: flex;
+  gap: 0.8rem;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.status {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.available {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.occupied {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.partial {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.light {
+  border: 1px solid #e0e0e0;
+}
+
+.roomListContainer.dark  {
+  background-color: #3d485a;
+  color: #f1f1f1;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.dark p {
+  color: #f1f1f1;
+}
+
+.test {
+  background-color: red;
+}

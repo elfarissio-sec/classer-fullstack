@@ -1,0 +1,143 @@
+.home {
+  color: #333;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo img {
+  height: 30px;
+}
+
+.header nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 10px;
+}
+
+.header nav li {
+  padding: 8px 15px;
+  border-radius: 5px;
+  background-color: #fff;
+  transition: background-color ease 0.3s;
+}
+
+.header nav li:hover {
+  background-color: #333;
+  color: #f9f9f9;
+  transition: background-color ease 0.3s;
+}
+
+.header nav a {
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.auth a {
+  text-decoration: none;
+  color: #333;
+  margin-left: 20px;
+  padding: 8px 15px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  transition: background-color ease 0.3s;
+}
+
+.auth .signup {
+  background-color: #337ab7;
+  color: #fff;
+  border-color: #337ab7;
+}
+
+.auth .signup:hover {
+  background-color: #0d4779;
+  color: #f9f9f9;
+}
+
+.auth .login:hover {
+  background-color: #bbbaba;
+  color: #fff;
+}
+
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  text-align: center;
+}
+
+.heroContent h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.heroContent p {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.cta {
+  background-color: #337ab7;
+  color: #fff;
+  padding: 15px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 18px;
+  transition: ease background-color 0.3s;
+}
+
+.cta:hover {
+  background-color: #0d4779;
+}
+
+.features,
+.about,
+.contact {
+  padding: 50px;
+  text-align: center;
+}
+
+.features h2,
+.about h2,
+.contact h2 {
+  font-size: 36px;
+  margin-bottom: 40px;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature {
+  background-color: #f9f9f9;
+  padding: 30px;
+  border-radius: 5px;
+}
+
+.feature h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}

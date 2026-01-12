@@ -1,0 +1,30 @@
+.roomsContainer {
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.roomsContainer.light {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.header h2 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.availabilityContent {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+}
+
+@media (max-width: 1200px) {
+  .availabilityContent {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,94 @@
+.reportsAnalyticsContainer {
+  padding: 20px;
+}
+
+.light .reportsAnalyticsContainer {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+.dark .reportsAnalyticsContainer {
+  background-color: #343a40;
+  color: #f8f9fa;
+}
+
+.reportCardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.reportCard {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.dark .reportCard {
+  background-color: #495057;
+  color: #f8f9fa;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.reportCard h3 {
+  margin-top: 0;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.dark .reportCard h3 {
+  color: #f8f9fa;
+}
+
+.reportCard p {
+  font-size: 1em;
+  margin-bottom: 5px;
+}
+
+.reportCard strong {
+  font-weight: bold;
+}
+
+.chartContainer {
+  height: 200px; /* Placeholder for chart */
+  background-color: #e9ecef;
+  margin-top: 15px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+}
+
+.dark .chartContainer {
+  background-color: #6c757d;
+  color: #dee2e6;
+}
+
+.exportButtons {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.exportButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+  background-color: #28a745;
+  color: white;
+}
+
+.exportButton:hover {
+  background-color: #218838;
+}
+
+.sectionTitle {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+}

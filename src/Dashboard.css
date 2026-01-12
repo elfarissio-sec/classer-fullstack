@@ -1,0 +1,47 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f4f7fa;
+  margin-left: 200px;
+  margin-top: 70px;
+}
+
+.dashboardOverview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
+  gap: 20px;
+}
+
+.light {
+  background-color: #f4f7fa;
+  color: #333;
+}
+
+.dark {
+  background-color: #282f3a;
+  color: #fff;
+}
+
+.dark a,
+.dark h1,
+.dark h2,
+.dark h3,
+.dark p {
+  color: white;
+}
+
+.dark .content {
+  background-color: #282f3a;
+}

@@ -1,0 +1,49 @@
+.sidebar {
+  width: 200px;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  height: 100vh;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  margin-top: 70px;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sidebar nav li {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.sidebar nav .option {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.sidebar nav .option svg {
+  margin-right: 10px;
+}
+
+.sidebar nav li:hover .option,
+.sidebar nav li a.active .option {
+  background: #d5e9fa;
+  color: #337ab7;
+}

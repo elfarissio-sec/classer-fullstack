@@ -1,0 +1,99 @@
+.timelineContainer {
+  background: #fff;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.dark.timelineContainer {
+  background-color: #3d485a;
+  color: #f1f1f1;
+}
+
+.timelineGrid {
+  display: grid;
+  grid-template-columns: 140px repeat(21, 60px);
+  align-items: center;
+}
+
+.headerCell {
+  text-align: center;
+  font-weight: bold;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ccc;
+  position: sticky;
+  top: 0;
+  background: #f8f9fa;
+}
+
+.headerCell:nth-child(1) {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.dark .headerCell {
+  background-color: #4c5a70;
+  border-color: #606f89;
+}
+
+.roomCell {
+  font-weight: bold;
+  padding: 1rem;
+  border-right: 1px solid #ccc;
+  position: sticky;
+  left: 0;
+  background: #f8f9fa;
+  z-index: 1;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dark .roomCell {
+  background-color: #4c5a70;
+  border-color: #606f89;
+}
+
+.roomRow {
+  grid-column: 2 / -1;
+  display: grid;
+  grid-template-columns: repeat(21, 60px);
+  position: relative;
+  border-bottom: 1px solid #eee;
+}
+
+.dark .roomRow {
+  border-color: #4c5a70;
+}
+
+.timeSlot {
+  height: 40px;
+  border-right: 1px dotted #eee;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.timeSlot:hover {
+  background-color: #e0e0e0;
+}
+
+.dark .timeSlot:hover {
+  background-color: #606f89;
+}
+
+.booking {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.8rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  z-index: 1;
+}

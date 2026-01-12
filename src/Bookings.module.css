@@ -1,0 +1,50 @@
+.bookings {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.dark {
+  background-color: #3d485a;
+  color: #f1f1f1;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.bookings h2 {
+  margin-top: 0;
+}
+
+.bookings table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bookings th,
+.bookings td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 0.7rem;
+}
+
+.confirmed {
+  background-color: #28a745;
+}
+
+.pending {
+  background-color: #ff7707;
+}
+
+.cancelled {
+  background-color: #dc3545;
+}

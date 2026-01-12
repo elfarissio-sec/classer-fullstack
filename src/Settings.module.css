@@ -1,0 +1,44 @@
+.settings {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.dark {
+  background-color: #3d485a;
+  color: #f1f1f1;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.settings h2 {
+  margin-top: 0;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.settings button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #337ab7;
+  color: #fff;
+  cursor: pointer;
+}

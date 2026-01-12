@@ -1,0 +1,472 @@
+.myBookingsContainer {
+  /* Some style in ftr */
+  position: relative; /* Needed for side panel positioning */
+}
+
+.tableContainer {
+  /* overflow-x: auto; */
+}
+
+.bookingsTable {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.light .bookingsTable {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.dark .bookingsTable {
+  background-color: #3d485a;
+  color: #f1f1f1;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.bookingsTable th,
+.bookingsTable td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.bookingsTable tbody tr {
+  cursor: pointer; /* Indicate clickable rows */
+}
+
+.bookingsTable tbody tr:hover {
+  background-color: #f5f5f5; /* Hover effect */
+}
+
+.dark .bookingsTable tbody tr:hover {
+  background-color: #555;
+}
+
+
+.light .bookingsTable th,
+.light .bookingsTable td {
+  border-color: #ddd;
+}
+
+.dark .bookingsTable th,
+.dark .bookingsTable td {
+  border-color: #555;
+}
+
+.bookingsTable th {
+  font-weight: bold;
+}
+
+.light .bookingsTable th {
+  background-color: #e0e0e0;
+}
+
+.dark .bookingsTable th {
+  background-color: #5f708b;
+}
+
+.status {
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status.confirmed {
+  background-color: #28a745;
+  color: white;
+}
+
+.status.pending {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.status.cancelled {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* New status style for modified bookings */
+.status.modified {
+  background-color: #17a2b8; /* Info blue */
+  color: white;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.actionButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+  color: white;
+}
+
+.actionButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+.light .actionButton:not(.cancelButton) {
+  background-color: #007bff;
+}
+
+.light .actionButton:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.dark .actionButton:not(.cancelButton) {
+  background-color: #008cff;
+}
+
+.dark .actionButton:hover:not(:disabled) {
+  background-color: #006bb3;
+}
+
+.cancelButton {
+  background-color: #dc3545;
+}
+
+.light .cancelButton:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.dark .cancelButton {
+  background-color: #e74c3c;
+}
+
+.dark .cancelButton:hover:not(:disabled) {
+  background-color: #c0392b;
+}
+
+/* Styles for view toggle */
+.viewToggle {
+  display: flex;
+  justify-content: flex-end; /* Align to the right */
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+
+.toggleButton {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.light .toggleButton {
+  border-color: #ddd;
+  background-color: #f8f8f8;
+  color: #333;
+}
+
+.light .toggleButton:hover {
+  background-color: #e0e0e0;
+}
+
+.light .toggleButton.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.dark .toggleButton {
+  border-color: #555;
+  background-color: #444;
+  color: #f1f1f1;
+}
+
+.dark .toggleButton:hover {
+  background-color: #555;
+}
+
+.dark .toggleButton.active {
+  background-color: #008cff;
+  color: white;
+  border-color: #008cff;
+}
+
+/* Styles for filters */
+.filtersContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.light .filtersContainer {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+}
+
+.dark .filtersContainer {
+  background-color: #3d485a;
+  border: 1px solid #555;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filterLabel {
+  font-weight: bold;
+  color: #333;
+}
+
+.dark .filterLabel {
+  color: #f1f1f1;
+}
+
+.filterInput,
+.filterSelect {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  background-color: #fff;
+  color: #333;
+  transition: border-color 0.3s ease;
+}
+
+.dark .filterInput,
+.dark .filterSelect {
+  background-color: #5f708b;
+  border-color: #777;
+  color: #f1f1f1;
+}
+
+.filterInput:focus,
+.filterSelect:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.dark .filterInput:focus,
+.dark .filterSelect:focus {
+  border-color: #008cff;
+  box-shadow: 0 0 0 2px rgba(0, 140, 255, 0.25);
+}
+
+/* Styles for quick toggles */
+.quickToggles {
+  display: flex;
+  justify-content: flex-start; /* Align to the left */
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+
+/* Style for cancelled rows */
+.cancelledRow {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Styles for side panel */
+.sidePanel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 350px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(0); /* Start visible */
+  transition: transform 0.3s ease-in-out;
+}
+
+.dark .sidePanel {
+  background-color: #3d485a;
+  color: #f1f1f1;
+}
+
+.sidePanelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.dark .sidePanelHeader {
+  border-bottom: 1px solid #555;
+}
+
+.sidePanelHeader h3 {
+  margin: 0;
+  color: #333;
+}
+
+.dark .sidePanelHeader h3 {
+  color: #f1f1f1;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+}
+
+.dark .closeButton {
+  color: #f1f1f1;
+}
+
+.sidePanelContent {
+  padding: 1rem;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.sidePanelContent p {
+  margin-bottom: 0.5rem;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.dark .formGroup label {
+  color: #f1f1f1;
+}
+
+.formInput,
+.formTextarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  background-color: #fff;
+  color: #333;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dark .formInput,
+.dark .formTextarea {
+  background-color: #5f708b;
+  border-color: #777;
+  color: #f1f1f1;
+}
+
+.formInput:focus,
+.formTextarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.dark .formInput:focus,
+.dark .formTextarea:focus {
+  border-color: #008cff;
+  box-shadow: 0 0 0 3px rgba(0, 140, 255, 0.25);
+}
+
+.formTextarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.sidePanelActions {
+  padding: 1rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.dark .sidePanelActions {
+  border-top: 1px solid #555;
+}
+
+/* New styles for bulk actions container */
+.bulkActionsContainer {
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Styles for Empty, Error, and Loading States */
+.loadingMessage,
+.errorMessage,
+.noResultsMessage {
+  padding: 1.5rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.loadingMessage {
+  background-color: #e0f7fa;
+  color: #007bb2;
+  border: 1px solid #00acc1;
+}
+
+.dark .loadingMessage {
+  background-color: #004d40;
+  color: #80cbc4;
+  border: 1px solid #26a69a;
+}
+
+.errorMessage {
+  background-color: #ffe0b2;
+  color: #e65100;
+  border: 1px solid #ff9800;
+}
+
+.dark .errorMessage {
+  background-color: #bf360c;
+  color: #ffab91;
+  border: 1px solid #ff7043;
+}
+
+.noResultsMessage {
+  background-color: #f3e5f5;
+  color: #880e4f;
+  border: 1px solid #e91e63;
+}
+
+.dark .noResultsMessage {
+  background-color: #4a148c;
+  color: #e1bee7;
+  border: 1px solid #ba68c8;
+}
