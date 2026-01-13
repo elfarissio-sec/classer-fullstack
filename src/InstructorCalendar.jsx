@@ -52,9 +52,13 @@ const InstructorCalendar = ({ theme, bookings = [] }) => {
           <div className={styles.dayNumber}>{i}</div>
           <div className={styles.bookings}>
             {dayBookings.map((booking) => (
-              <div key={booking.id}>
-                <div className={styles.booking}>{booking.class_name || booking.className || "Booking"}</div>
+              <div key={booking.id} className={styles.bookingItem}>
+                <div className={styles.booking}>{booking.class_name || "Booking"}</div>
                 <div className={styles.booking}>{booking.status || "Pending"}</div>
+                <div className={styles.booking}>
+                  {booking.start_time}-{booking.end_time}
+                </div>
+                <div className={styles.booking}>{booking.user_name || "Unknown Instructor"}</div>
               </div>
             ))}
           </div>

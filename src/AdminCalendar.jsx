@@ -1,89 +1,102 @@
-"use client"
+"use client";
 
-import { useOutletContext } from "react-router-dom"
-import { useState, useMemo, useEffect } from "react"
-import styles from "./AdminCalendar.module.css"
-import { api } from "./api/config"
+import { useOutletContext } from "react-router-dom";
+import { useState, useMemo, useEffect } from "react";
+import styles from "./AdminCalendar.module.css";
+import { api } from "./api/config";
 
 const AdminCalendar = ({ theme: propTheme }) => {
-  const context = useOutletContext()
-  const theme = propTheme || context?.theme
-  const [date, setDate] = useState(new Date())
-  const [bookings, setBookings] = useState([])
-  const [loading, setLoading] = useState(true)
+  const context = useOutletContext();
+  const theme = propTheme || context?.theme;
+  const [date, setDate] = useState(new Date());
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        setLoading(true)
-        const data = await api.getBookings()
-        setBookings(data)
+        setLoading(true);
+        const data = await api.getBookings();
+        console.log("Fetched bookings:", data);
+        setBookings(data);
       } catch (err) {
-        console.error("Error fetching bookings:", err)
+        console.error("Error fetching bookings:", err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    fetchBookings()
-  }, [])
+    };
+    fetchBookings();
+  }, []);
 
   const getMonthData = useMemo(() => {
-    const year = date.getFullYear()
-    const month = date.getMonth()
-    const firstDayRaw = new Date(year, month, 1).getDay()
-    const firstDay = firstDayRaw === 0 ? 6 : firstDayRaw - 1
-    const daysInMonth = new Date(year, month + 1, 0).getDate()
-    return { year, month, firstDay, daysInMonth }
-  }, [date])
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDayRaw = new Date(year, month, 1).getDay();
+    const firstDay = firstDayRaw === 0 ? 6 : firstDayRaw - 1;
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    return { year, month, firstDay, daysInMonth };
+  }, [date]);
 
-  const { year, month, firstDay, daysInMonth } = getMonthData
+  const { year, month, firstDay, daysInMonth } = getMonthData;
 
   const bookingsByDate = (bookings || []).reduce((acc, booking) => {
-    const d = booking.date
+    const d = booking.date.split("T")[0];
     if (!acc[d]) {
-      acc[d] = []
+      acc[d] = [];
     }
-    acc[d].push(booking)
-    return acc
-  }, {})
+    acc[d].push(booking);
+    return acc;
+  }, {});
+
+  console.log("Bookings by date:", bookingsByDate);
 
   const formatLocalDate = (date) => {
-    const y = date.getFullYear()
-    const m = String(date.getMonth() + 1).padStart(2, "0")
-    const d = String(date.getDate()).padStart(2, "0")
-    return `${y}-${m}-${d}`
-  }
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  };
 
   const renderDays = () => {
-    const days = []
+    const days = [];
     for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} className={""}></div>)
+      days.push(<div key={`empty-${i}`} className={""}></div>);
     }
+    const today = new Date();
     for (let i = 1; i <= daysInMonth; i++) {
-      const dayDate = new Date(year, month, i)
-      const dateString = formatLocalDate(dayDate)
-      const dayBookings = bookingsByDate[dateString] || []
-
+      const dayDate = new Date(year, month, i);
+      const dateString = formatLocalDate(dayDate);
+      const dayBookings = bookingsByDate[dateString] || [];
+      const isToday =
+        dayDate.getDate() === today.getDate() &&
+        dayDate.getMonth() === today.getMonth() &&
+        dayDate.getFullYear() === today.getFullYear();
       days.push(
-        <div key={i} className={`${styles.day} ${i === date.getDate() ? styles.today : ""}`}>
+        <div key={i} className={`${styles.day} ${isToday ? styles.today : ""}`}>
           <div className={styles.dayNumber}>{i}</div>
           <div className={styles.bookings}>
             {dayBookings.map((booking) => (
               <div key={booking.id} className={styles.bookingItem}>
-                <div className={styles.booking}>{booking.class_name || "Booking"}</div>
-                <div className={styles.booking}>{booking.status || "Pending"}</div>
+                <div className={styles.booking}>
+                  {booking.class_name || "Booking"}
+                </div>
+                <div className={styles.booking}>
+                  {booking.status || "Pending"}
+                </div>
                 <div className={styles.booking}>
                   {booking.start_time}-{booking.end_time}
                 </div>
-                <div className={styles.booking}>{booking.user_name || "Unknown Instructor"}</div>
+                <div className={styles.booking}>
+                  {booking.user_name || "Unknown Instructor"}
+                </div>
               </div>
             ))}
           </div>
-        </div>,
-      )
+        </div>
+      );
     }
-    return days
-  }
+    return days;
+  };
 
   const monthNames = [
     "January",
@@ -98,20 +111,20 @@ const AdminCalendar = ({ theme: propTheme }) => {
     "October",
     "November",
     "December",
-  ]
+  ];
 
   const changeMonth = (offset) => {
-    const newDate = new Date(date)
-    newDate.setMonth(newDate.getMonth() + offset)
-    setDate(newDate)
-  }
+    const newDate = new Date(date);
+    newDate.setMonth(newDate.getMonth() + offset);
+    setDate(newDate);
+  };
 
   if (loading) {
     return (
       <div className={`${styles.calendarContainer} ${styles[theme]}`}>
         <p>Loading calendar...</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -134,7 +147,7 @@ const AdminCalendar = ({ theme: propTheme }) => {
       </div>
       <div className={styles.calendarGrid}>{renderDays()}</div>
     </div>
-  )
-}
+  );
+};
 
-export default AdminCalendar
+export default AdminCalendar;

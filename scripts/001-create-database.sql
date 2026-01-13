@@ -2,8 +2,8 @@
 -- Run this script to create all necessary tables
 
 -- Create database (run this separately if needed)
--- CREATE DATABASE IF NOT EXISTS classer;
--- USE classer;
+CREATE DATABASE IF NOT EXISTS classer;
+USE classer;
 
 -- Users table
 CREATE TABLE IF NOT EXISTS users (

@@ -1,32 +1,32 @@
-"use client"
+"use client";
 
-import { useState, useMemo, useEffect } from "react"
-import { useOutletContext } from "react-router-dom"
-import styles from "./BookARoom.module.css"
-import RoomList from "./Rooms"
-import TimelineView from "./TimelineView"
-import { api } from "./api/config"
+import { useState, useMemo, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
+import styles from "./BookARoom.module.css";
+import RoomList from "./Rooms";
+import TimelineView from "./TimelineView";
+import { api } from "./api/config";
 
 const generateTimeSlots = () => {
-  const slots = []
+  const slots = [];
   for (let i = 8; i <= 18; i++) {
-    slots.push(`${i.toString().padStart(2, "0")}:00`)
+    slots.push(`${i.toString().padStart(2, "0")}:00`);
     if (i < 18) {
-      slots.push(`${i.toString().padStart(2, "0")}:30`)
+      slots.push(`${i.toString().padStart(2, "0")}:30`);
     }
   }
-  return slots
-}
+  return slots;
+};
 
 const BookARoom = ({ theme: propTheme }) => {
-  const context = useOutletContext()
-  const theme = propTheme || context?.theme
+  const context = useOutletContext();
+  const theme = propTheme || context?.theme;
 
-  const [rooms, setRooms] = useState([])
-  const [bookings, setBookings] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [submitting, setSubmitting] = useState(false)
-  const [error, setError] = useState(null)
+  const [rooms, setRooms] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({
     room: "",
@@ -38,90 +38,110 @@ const BookARoom = ({ theme: propTheme }) => {
     subject: "",
     studentCount: "",
     notes: "",
-  })
+  });
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [view, setView] = useState("list")
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [view, setView] = useState("list");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true)
-        const [roomsData, bookingsData] = await Promise.all([api.getRooms(), api.getBookings()])
-        setRooms(roomsData)
-        setBookings(bookingsData)
+        setLoading(true);
+        const [roomsData, bookingsData] = await Promise.all([
+          api.getRooms(),
+          api.getBookings(),
+        ]);
+        setRooms(roomsData);
+        setBookings(bookingsData);
       } catch (err) {
-        setError(err.message)
+        setError(err.message);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    fetchData()
-  }, [])
+    };
+    fetchData();
+  }, []);
 
   const getTodayDate = () => {
-    const today = new Date()
-    const year = today.getFullYear()
-    const month = String(today.getMonth() + 1).padStart(2, "0")
-    const day = String(today.getDate()).padStart(2, "0")
-    return `${year}-${month}-${day}`
-  }
-  const todayDate = getTodayDate()
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+  const todayDate = getTodayDate();
 
   const timeSlots = useMemo(() => {
-    const allSlots = generateTimeSlots()
-
+    const allSlots = generateTimeSlots();
+    
     if (!formData.roomId || !formData.date) {
-      return allSlots.map((time) => ({ time, isOccupied: false }))
+      return allSlots.map((time) => ({ time, isOccupied: false }));
     }
-
+    
     const todaysBookings = bookings.filter(
       (booking) =>
-        booking.room_id === formData.roomId && booking.date === formData.date && booking.status !== "cancelled",
-    )
+        booking.room_id === formData.roomId &&
+      booking.date === formData.date &&
+      booking.status !== "cancelled"
+    );
+    
+    const currentTime = new Date().getHours();
+    // Mark past time slots as occupied if booking is for today
+    let past_slots = new Set();
+    if (formData.date === getTodayDate()) {
+      allSlots.forEach((slot) => {
+        const slotTime = new Date(`${formData.date}T${slot}`);
+        if (slotTime.getHours() < currentTime) {
+          past_slots.add(slot);
+        }
+      });
+    }
 
-    const occupiedSlots = new Set()
+    const occupiedSlots = new Set();
     todaysBookings.forEach((booking) => {
-      const start = new Date(`${formData.date}T${booking.start_time}`)
-      const end = new Date(`${formData.date}T${booking.end_time}`)
+      const start = new Date(`${formData.date}T${booking.start_time}`);
+      const end = new Date(`${formData.date}T${booking.end_time}`);
+
+      // If booking is for today, mark past time slots as occupied;
 
       allSlots.forEach((slot) => {
-        const slotTime = new Date(`${formData.date}T${slot}`)
+        const slotTime = new Date(`${formData.date}T${slot}`);
         if (slotTime >= start && slotTime < end) {
-          occupiedSlots.add(slot)
+          occupiedSlots.add(slot);
         }
-      })
-    })
+      });
+    });
 
     return allSlots.map((time) => ({
       time,
       isOccupied: occupiedSlots.has(time),
-    }))
-  }, [formData.roomId, formData.date, bookings])
+      isPast: past_slots.has(time),
+    }));
+  }, [formData.roomId, formData.date, bookings]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
 
     if (name === "room") {
-      const selectedRoom = rooms.find((r) => r.name === value)
+      const selectedRoom = rooms.find((r) => r.name === value);
       setFormData({
         ...formData,
         room: value,
         roomId: selectedRoom?.id || null,
-      })
+      });
     } else {
-      setFormData({ ...formData, [name]: value })
+      setFormData({ ...formData, [name]: value });
     }
-  }
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    setIsModalOpen(true)
-  }
+    e.preventDefault();
+    setIsModalOpen(true);
+  };
 
   const handleConfirmBooking = async () => {
     try {
-      setSubmitting(true)
+      setSubmitting(true);
       await api.createBooking({
         roomId: formData.roomId,
         date: formData.date,
@@ -131,14 +151,14 @@ const BookARoom = ({ theme: propTheme }) => {
         subject: formData.subject,
         studentCount: Number.parseInt(formData.studentCount) || 0,
         notes: formData.notes,
-      })
+      });
 
-      alert("Booking request submitted successfully!")
-      setIsModalOpen(false)
+      alert("Booking request submitted successfully!");
+      setIsModalOpen(false);
 
       // Refresh bookings
-      const bookingsData = await api.getBookings()
-      setBookings(bookingsData)
+      const bookingsData = await api.getBookings();
+      setBookings(bookingsData);
 
       // Reset form
       setFormData({
@@ -151,13 +171,13 @@ const BookARoom = ({ theme: propTheme }) => {
         subject: "",
         studentCount: "",
         notes: "",
-      })
+      });
     } catch (err) {
-      alert(`Error: ${err.message}`)
+      alert(`Error: ${err.message}`);
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
-  }
+  };
 
   const handleSlotClick = (room, startTime, endTime) => {
     setFormData((prev) => ({
@@ -166,16 +186,20 @@ const BookARoom = ({ theme: propTheme }) => {
       roomId: room.id,
       startTime,
       endTime,
-    }))
-  }
+    }));
+  };
 
-  const startTimeIndex = formData.startTime ? timeSlots.findIndex((slot) => slot.time === formData.startTime) : -1
+  const startTimeIndex = formData.startTime
+    ? timeSlots.findIndex((slot) => slot.time === formData.startTime)
+    : -1;
 
-  let nextOccupiedTime = null
+  let nextOccupiedTime = null;
   if (startTimeIndex > -1) {
-    const nextOccupiedSlot = timeSlots.slice(startTimeIndex + 1).find((slot) => slot.isOccupied)
+    const nextOccupiedSlot = timeSlots
+      .slice(startTimeIndex + 1)
+      .find((slot) => slot.isOccupied);
     if (nextOccupiedSlot) {
-      nextOccupiedTime = nextOccupiedSlot.time
+      nextOccupiedTime = nextOccupiedSlot.time;
     }
   }
 
@@ -184,7 +208,7 @@ const BookARoom = ({ theme: propTheme }) => {
       <div className={`${styles.bookARoomContainer} ${styles[theme]}`}>
         <p>Loading...</p>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -192,7 +216,7 @@ const BookARoom = ({ theme: propTheme }) => {
       <div className={`${styles.bookARoomContainer} ${styles[theme]}`}>
         <p className={styles.error}>Error: {error}</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -202,7 +226,13 @@ const BookARoom = ({ theme: propTheme }) => {
         <form onSubmit={handleSubmit} className={styles.bookingForm}>
           <div className={styles.formGroup}>
             <label htmlFor="room">Room</label>
-            <select id="room" name="room" value={formData.room} onChange={handleChange} required>
+            <select
+              id="room"
+              name="room"
+              value={formData.room}
+              onChange={handleChange}
+              required
+            >
               <option value="">Select a Room</option>
               {rooms.map((room) => (
                 <option key={room.id} value={room.name}>
@@ -225,30 +255,46 @@ const BookARoom = ({ theme: propTheme }) => {
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="startTime">Start Time</label>
-            <select id="startTime" name="startTime" value={formData.startTime} onChange={handleChange} required>
+            <select
+              id="startTime"
+              name="startTime"
+              value={formData.startTime}
+              onChange={handleChange}
+              required
+            >
               <option value="">Select a Start Time</option>
-              {timeSlots.map(({ time, isOccupied }) => (
-                <option key={time} value={time} disabled={isOccupied}>
-                  {time} {isOccupied ? "(Booked)" : ""}
+              {timeSlots.map(({ time, isOccupied, isPast }) => (
+                <option key={time} value={time} disabled={isOccupied || isPast}>
+                  {time} {isOccupied ? "(Booked)" : isPast ? "(Past)" : ""}
                 </option>
               ))}
             </select>
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="endTime">End Time</label>
-            <select id="endTime" name="endTime" value={formData.endTime} onChange={handleChange} required>
+            <select
+              id="endTime"
+              name="endTime"
+              value={formData.endTime}
+              onChange={handleChange}
+              required
+            >
               <option value="">Select an End Time</option>
               {timeSlots.map(({ time, isOccupied }, index) => {
-                const isBeforeOrAtStart = startTimeIndex > -1 && index <= startTimeIndex
-                const isNonContinuous = nextOccupiedTime && time > nextOccupiedTime
-                const isItselfOccupied = isOccupied && time !== nextOccupiedTime
-                const isDisabled = isBeforeOrAtStart || isNonContinuous || isItselfOccupied
+                const isBeforeOrAtStart =
+                  startTimeIndex > -1 && index <= startTimeIndex;
+                const isNonContinuous =
+                  nextOccupiedTime && time > nextOccupiedTime;
+                const isItselfOccupied =
+                  isOccupied && time !== nextOccupiedTime;
+                const isDisabled =
+                  isBeforeOrAtStart || isNonContinuous || isItselfOccupied;
 
                 return (
                   <option key={time} value={time} disabled={isDisabled}>
                     {time} {isOccupied ? "(Booked)" : ""}
                   </option>
-                )
+                );
               })}
             </select>
           </div>
@@ -265,7 +311,13 @@ const BookARoom = ({ theme: propTheme }) => {
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="subject">Subject</label>
-            <input type="text" id="subject" name="subject" value={formData.subject} onChange={handleChange} />
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              value={formData.subject}
+              onChange={handleChange}
+            />
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="studentCount">Student Count</label>
@@ -280,7 +332,13 @@ const BookARoom = ({ theme: propTheme }) => {
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="notes">Notes</label>
-            <textarea id="notes" name="notes" value={formData.notes} onChange={handleChange} rows="3"></textarea>
+            <textarea
+              id="notes"
+              name="notes"
+              value={formData.notes}
+              onChange={handleChange}
+              rows="3"
+            ></textarea>
           </div>
           <button type="submit" className={styles.submitButton}>
             Book Now
@@ -289,15 +347,26 @@ const BookARoom = ({ theme: propTheme }) => {
       </div>
       <div className={styles.roomsOverview}>
         <div className={styles.viewToggle}>
-          <button onClick={() => setView("list")} className={view === "list" ? styles.activeView : ""}>
+          <button
+            onClick={() => setView("list")}
+            className={view === "list" ? styles.activeView : ""}
+          >
             List View
           </button>
-          <button onClick={() => setView("timeline")} className={view === "timeline" ? styles.activeView : ""}>
+          <button
+            onClick={() => setView("timeline")}
+            className={view === "timeline" ? styles.activeView : ""}
+          >
             Timeline View
           </button>
         </div>
         {view === "list" ? (
-          <RoomList theme={theme} selection={formData} rooms={rooms} bookings={bookings} />
+          <RoomList
+            theme={theme}
+            selection={formData}
+            rooms={rooms}
+            bookings={bookings}
+          />
         ) : (
           <TimelineView
             theme={theme}
@@ -331,10 +400,17 @@ const BookARoom = ({ theme: propTheme }) => {
               </p>
             )}
             <div className={styles.modalActions}>
-              <button onClick={handleConfirmBooking} className={styles.confirmButton} disabled={submitting}>
+              <button
+                onClick={handleConfirmBooking}
+                className={styles.confirmButton}
+                disabled={submitting}
+              >
                 {submitting ? "Submitting..." : "Confirm"}
               </button>
-              <button onClick={() => setIsModalOpen(false)} className={styles.cancelButton}>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className={styles.cancelButton}
+              >
                 Cancel
               </button>
             </div>
@@ -342,7 +418,7 @@ const BookARoom = ({ theme: propTheme }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default BookARoom
+export default BookARoom;
