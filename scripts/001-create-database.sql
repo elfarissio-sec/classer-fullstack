@@ -1,7 +1,5 @@
--- Classer Database Schema for MySQL
--- Run this script to create all necessary tables
+-- Classer Database Schema MySQL
 
--- Create database (run this separately if needed)
 CREATE DATABASE IF NOT EXISTS classer;
 USE classer;
 

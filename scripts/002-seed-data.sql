@@ -1,13 +1,13 @@
 -- Seed data for Classer database
 
 -- Insert default users (password is hashed version of '123')
--- Using bcrypt hash for '123': $2b$10$rQZ8K.5C5l5Z5Z5Z5Z5Z5e
+-- Using bcrypt hash for '123': $2a$10$Pkk8sjjuAWolQen9brtnRO2jRumTJPuqGWT/.hwQrPRQTz5YxlIf2
 INSERT INTO users (name, email, password, role) VALUES
-('Admin User', 'admin@classer.com', '$2b$10$YourHashHere123456789012345678901234567890', 'admin'),
-('Alice Johnson', 'alice@classer.com', '$2b$10$YourHashHere123456789012345678901234567890', 'instructor'),
-('Bob Smith', 'bob@classer.com', '$2b$10$YourHashHere123456789012345678901234567890', 'instructor'),
-('Charlie Brown', 'charlie@classer.com', '$2b$10$YourHashHere123456789012345678901234567890', 'instructor'),
-('Diana Prince', 'diana@classer.com', '$2b$10$YourHashHere123456789012345678901234567890', 'instructor');
+('Admin User', 'admin@classer.com', '$2a$10$Pkk8sjjuAWolQen9brtnRO2jRumTJPuqGWT/.hwQrPRQTz5YxlIf2', 'admin'),
+('Alice Johnson', 'alice@classer.com', '$2a$10$Pkk8sjjuAWolQen9brtnRO2jRumTJPuqGWT/.hwQrPRQTz5YxlIf2', 'instructor'),
+('Bob Smith', 'bob@classer.com', '$2a$10$Pkk8sjjuAWolQen9brtnRO2jRumTJPuqGWT/.hwQrPRQTz5YxlIf2', 'instructor'),
+('Charlie Brown', 'charlie@classer.com', '$2a$10$Pkk8sjjuAWolQen9brtnRO2jRumTJPuqGWT/.hwQrPRQTz5YxlIf2', 'instructor'),
+('Diana Prince', 'diana@classer.com', '$2a$10$Pkk8sjjuAWolQen9brtnRO2jRumTJPuqGWT/.hwQrPRQTz5YxlIf2', 'instructor');
 
 -- Insert rooms
 INSERT INTO rooms (name, capacity, status, equipment, location) VALUES
