@@ -1,10 +1,16 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useMemo } from "react"
-import styles from "./Rooms.module.css"
-import { FaUsers, FaChalkboard, FaDesktop, FaMapMarkerAlt, FaTv } from "react-icons/fa"
-import { useOutletContext } from "react-router-dom"
-import { api } from "./api/config"
+import { useState, useEffect, useMemo } from "react";
+import styles from "./Rooms.module.css";
+import {
+  FaUsers,
+  FaChalkboard,
+  FaDesktop,
+  FaMapMarkerAlt,
+  FaTv,
+} from "react-icons/fa";
+import { useOutletContext } from "react-router-dom";
+import { api } from "./api/config";
 
 // const getRoomStatus = (room, selection, bookings) => {
 //   if (!selection || !selection.date || !selection.startTime || !selection.endTime) {
@@ -51,90 +57,119 @@ import { api } from "./api/config"
 
 // Nouvelle fonction pour vérifier si une salle est disponible MAINTENANT
 const isRoomAvailableNow = (room, bookings) => {
-  const now = new Date()
-  const today = now.toISOString().split('T')[0] // Format YYYY-MM-DD
-  
+  const now = new Date();
+  const today = now.toISOString().split("T")[0]; // Format YYYY-MM-DD
+
   // Filtrer les réservations de cette salle pour aujourd'hui
   const todayBookings = bookings.filter(
-    (b) => b.room_id === room.id && b.date.split("T")[0] === today && b.status !== 'cancelled'
-  )
+    (b) =>
+      b.room_id === room.id &&
+      b.date.split("T")[0] === today &&
+      b.status !== "cancelled"
+  );
+
+  console.log(bookings);
 
   // Si aucune réservation aujourd'hui, la salle est disponible
   if (todayBookings.length === 0) {
-    return true
+    return true;
   }
 
   // Vérifier si l'heure actuelle est dans un créneau réservé
-  const currentTime = now.getHours() * 60 + now.getMinutes() // Minutes depuis minuit
+  const currentTime = now.getHours() * 60 + now.getMinutes(); // Minutes depuis minuit
 
   const isOccupied = todayBookings.some((booking) => {
     // Convertir start_time et end_time en minutes
-    const [startHour, startMin] = booking.start_time.split(':').map(Number)
-    const [endHour, endMin] = booking.end_time.split(':').map(Number)
-    
-    const bookingStart = startHour * 60 + startMin
-    const bookingEnd = endHour * 60 + endMin
+    const [startHour, startMin] = booking.start_time.split(":").map(Number);
+    const [endHour, endMin] = booking.end_time.split(":").map(Number);
 
+    const bookingStart = startHour * 60 + startMin;
+    const bookingEnd = endHour * 60 + endMin;
 
     // Vérifier si l'heure actuelle est dans ce créneau
-    return currentTime >= bookingStart && currentTime < bookingEnd
-  })
+    return currentTime >= bookingStart && currentTime < bookingEnd;
+  });
 
-  return !isOccupied
-}
+  return !isOccupied;
+};
 
 const Rooms = ({ rooms: propRooms, bookings: propBookings }) => {
-  const { theme } = useOutletContext()
-  const [rooms, setRooms] = useState(propRooms || [])
-  const [bookings, setBookings] = useState(propBookings || [])
-  const [loading, setLoading] = useState(!propRooms)
-  const [error, setError] = useState(null)
-  
+  const { theme } = useOutletContext();
+  const [rooms, setRooms] = useState(propRooms || []);
+  const [bookings, setBookings] = useState(propBookings || []);
+  const [loading, setLoading] = useState(!propRooms);
+  const [error, setError] = useState(null);
+
   // Nouveau state pour le filtre
-  const [showOnlyAvailable, setShowOnlyAvailable] = useState(false)
+  const [showOnlyAvailable, setShowOnlyAvailable] = useState(false);
 
   useEffect(() => {
-    if (!propRooms) {
+    if (!propRooms || !propBookings || propRooms.length === 0) {
       const fetchData = async () => {
         try {
-          setLoading(true)
+          setLoading(true);
           const [roomsData, bookingsData] = await Promise.all([
-            api.getRooms(), 
-            api.getBookings()
-          ])
-          setRooms(roomsData)
-          setBookings(bookingsData)
+            api.getRooms(),
+            api.getBookings(),
+          ]);
+          console.log("Fetched bookings:", bookingsData);
+          setRooms(roomsData);
+          setBookings(bookingsData);
         } catch (err) {
-          setError(err.message)
+          setError(err.message);
         } finally {
-          setLoading(false)
+          setLoading(false);
         }
-      }
-      fetchData()
+      };
+      fetchData();
+    } else {
+      propBookings.forEach((booking) => {
+        // console.log("Booking date:", booking.date);
+        // console.log("Booking date:", booking.date.split("T")[1]);
+        if (booking.date.split("T")[1] === "23:00:00.000Z") {
+          // console.log("Correcting booking date from", booking.date);
+          booking.date =
+            new Date(booking.date).toISOString().split("T")[0][0] +
+            new Date(booking.date).toISOString().split("T")[0][1] +
+            new Date(booking.date).toISOString().split("T")[0][2] +
+            new Date(booking.date).toISOString().split("T")[0][3] +
+            new Date(booking.date).toISOString().split("T")[0][4] +
+            new Date(booking.date).toISOString().split("T")[0][5] +
+            new Date(booking.date).toISOString().split("T")[0][6] +
+            new Date(booking.date).toISOString().split("T")[0][7] +
+            (
+              parseInt(
+                new Date(booking.date).toISOString().split("T")[0][8] +
+                  new Date(booking.date).toISOString().split("T")[0][9]
+              ) + 1
+            ).toString();
+          // console.log("to", booking.date);
+        }
+      });
     }
-  }, [propRooms])
+  }, [propRooms]);
 
   // Update when props change
   useEffect(() => {
-    if (propRooms) setRooms(propRooms)
-    if (propBookings) setBookings(propBookings)
-  }, [propRooms, propBookings])
+    if (propRooms) setRooms(propRooms);
+    if (propBookings) setBookings(propBookings);
+  }, [propRooms, propBookings]);
 
   // Filtrer les salles disponibles maintenant
   const filteredRooms = useMemo(() => {
     if (!showOnlyAvailable) {
-      return rooms
+      return rooms;
     }
-    
-    return rooms.filter((room) => isRoomAvailableNow(room, bookings))
-  }, [rooms, bookings, showOnlyAvailable])
+
+    return rooms.filter((room) => isRoomAvailableNow(room, bookings));
+  }, [rooms, bookings, showOnlyAvailable]);
 
   if (loading) {
     return (
       <div className={`${styles.roomListContainer} ${styles[theme]}`}>
         <p>Loading rooms...</p>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -142,7 +177,7 @@ const Rooms = ({ rooms: propRooms, bookings: propBookings }) => {
       <div className={`${styles.roomListContainer} ${styles[theme]}`}>
         <p className={styles.error}>Error: {error}</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -154,7 +189,7 @@ const Rooms = ({ rooms: propRooms, bookings: propBookings }) => {
         <select>
           <option>All Equipment</option>
         </select>
-        
+
         {/* Nouveau toggle pour afficher uniquement les salles disponibles */}
         <label className={styles.toggleFilter}>
           <input
@@ -175,7 +210,7 @@ const Rooms = ({ rooms: propRooms, bookings: propBookings }) => {
 
       <div className={styles.roomGrid}>
         {filteredRooms.map((room) => {
-          const isCurrentlyAvailable = isRoomAvailableNow(room, bookings)
+          const isCurrentlyAvailable = isRoomAvailableNow(room, bookings);
           return (
             <div key={room.id} className={styles.roomCard}>
               <h4>{room.name}</h4>
@@ -186,23 +221,33 @@ const Rooms = ({ rooms: propRooms, bookings: propBookings }) => {
                 <FaUsers /> Capacity: {room.capacity}
               </p>
               <div className={styles.equipment}>
-                {room.equipment?.includes("projector") && <FaTv title="Projector" />}
-                {room.equipment?.includes("whiteboard") && <FaChalkboard title="Whiteboard" />}
-                {room.equipment?.includes("computers") && <FaDesktop title="Computers" />}
+                {room.equipment?.includes("projector") && (
+                  <FaTv title="Projector" />
+                )}
+                {room.equipment?.includes("whiteboard") && (
+                  <FaChalkboard title="Whiteboard" />
+                )}
+                {room.equipment?.includes("computers") && (
+                  <FaDesktop title="Computers" />
+                )}
               </div>
-              
+
               {/* Afficher le statut actuel */}
               <div className={styles.statusContainer}>
-                <span className={`${styles.status} ${styles[isCurrentlyAvailable ? 'available' : 'occupied']}`}>
+                <span
+                  className={`${styles.status} ${
+                    styles[isCurrentlyAvailable ? "available" : "occupied"]
+                  }`}
+                >
                   {isCurrentlyAvailable ? "Available" : "Occupied"}
                 </span>
               </div>
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Rooms
+export default Rooms;

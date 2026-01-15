@@ -73,18 +73,18 @@ const BookARoom = ({ theme: propTheme }) => {
 
   const timeSlots = useMemo(() => {
     const allSlots = generateTimeSlots();
-    
+
     if (!formData.roomId || !formData.date) {
       return allSlots.map((time) => ({ time, isOccupied: false }));
     }
-    
+
     const todaysBookings = bookings.filter(
       (booking) =>
         booking.room_id === formData.roomId &&
-      booking.date === formData.date &&
-      booking.status !== "cancelled"
+        booking.date === formData.date &&
+        booking.status !== "cancelled"
     );
-    
+
     const currentTime = new Date().getHours();
     // Mark past time slots as occupied if booking is for today
     let past_slots = new Set();
@@ -121,9 +121,8 @@ const BookARoom = ({ theme: propTheme }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
+    const selectedRoom = rooms.find((r) => r.name === value);
     if (name === "room") {
-      const selectedRoom = rooms.find((r) => r.name === value);
       setFormData({
         ...formData,
         room: value,
@@ -140,6 +139,13 @@ const BookARoom = ({ theme: propTheme }) => {
   };
 
   const handleConfirmBooking = async () => {
+    if (
+      formData.studentCount >
+      rooms.find((r) => r.id === formData.roomId)?.capacity
+    ) {
+      alert("Please enter a valid number for Student Count.");
+      return;
+    }
     try {
       setSubmitting(true);
       await api.createBooking({

@@ -26,10 +26,11 @@ router.get("/", authenticateToken, async (req, res) => {
     const params = []
 
     // Only admins can see all bookings, instructors see their own
-    if (req.user.role !== "admin") {
-      sql += " AND b.user_id = ?"
-      params.push(req.user.id)
-    } else if (userId) {
+    // if (req.user.role !== "admin") {
+    //   sql += " AND b.user_id = ?"
+    //   params.push(req.user.id)
+    // } else 
+    if (userId) {
       sql += " AND b.user_id = ?"
       params.push(userId)
     }
@@ -50,6 +51,7 @@ router.get("/", authenticateToken, async (req, res) => {
     sql += " ORDER BY b.date DESC, b.start_time DESC"
 
     const bookings = await query(sql, params)
+    console.log("Retrieved bookings:", bookings)
     res.json(bookings)
   } catch (error) {
     console.error("Get bookings error:", error)
